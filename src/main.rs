@@ -1,3 +1,5 @@
+#[macro_use]
+extern crate lazy_static;
 mod runners;
 
 fn main() -> Result<(), std::io::Error> {
