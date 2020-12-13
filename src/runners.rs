@@ -1,6 +1,7 @@
 mod common;
 mod day01;
 mod day02;
+mod day03;
 
 type Runner = Box<dyn Fn(String, &[String])>;
 
@@ -19,6 +20,7 @@ fn get_runner(day: u32) -> Option<Runner> {
     match day {
         1 => Some(Box::new(day01::run)),
         2 => Some(Box::new(day02::run)),
+        3 => Some(Box::new(day03::run)),
         _ => None,
     }
 }
