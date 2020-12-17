@@ -5,7 +5,7 @@ pub fn run(input: String, _args: &[String]) {
         .lines()
         .map(|line| {
             line.parse::<u32>()
-                .expect(&format!("Could not parse line: {}", line))
+                .unwrap_or_else(|_| panic!("Could not parse line: {}", line))
         })
         .collect();
 
@@ -25,7 +25,7 @@ pub fn run(input: String, _args: &[String]) {
 fn find_elems_adding_to(v: &[u32], count: usize, sum: u32) -> Option<Vec<u32>> {
     let combinations = v.iter().cloned().combinations(count);
     for combo in combinations {
-        if combo.iter().fold(0, |acc, &x| acc + x) == sum {
+        if combo.iter().sum::<u32>() == sum {
             return Some(combo);
         }
     }

@@ -6,7 +6,7 @@ pub fn run(input: String, _args: &[String]) {
     let max = ids.iter().max().unwrap();
     println!("The boarding pass with the highest seat ID is {}", max);
 
-    ids.sort();
+    ids.sort_unstable();
     for window in (&ids[..]).windows(2) {
         if window[0] + 1 != window[1] {
             println!("Your seat ID is {}", window[0] + 1);

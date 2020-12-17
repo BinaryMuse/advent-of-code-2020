@@ -119,11 +119,11 @@ impl FromStr for Passport {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let full = s.split("\n").collect::<Vec<_>>().join(" ");
+        let full = s.split('\n').collect::<Vec<_>>().join(" ");
         let entries: Vec<_> = full
-            .split(" ")
+            .split(' ')
             .map(|entry| {
-                let mut parts = entry.split(":");
+                let mut parts = entry.split(':');
                 let name = parts.next().unwrap();
                 let value = parts.next().unwrap_or("");
                 (name, value)

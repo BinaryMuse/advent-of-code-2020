@@ -47,7 +47,7 @@ impl PasswordPolicy {
 
     pub fn check_old(&self, s: &str) -> bool {
         let count = s.chars().filter(|&c| c == self.letter).count();
-        return count >= self.min && count <= self.max;
+        count >= self.min && count <= self.max
     }
 
     pub fn check_new(&self, s: &str) -> bool {

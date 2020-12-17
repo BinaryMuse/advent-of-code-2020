@@ -33,7 +33,7 @@ impl Bag {
     fn new(color: &str, children: Option<Vec<(usize, String)>>) -> Self {
         Self {
             color: color.to_string(),
-            children: children.clone(),
+            children,
             parents: vec![],
         }
     }
@@ -99,7 +99,7 @@ impl Rules {
         // was defined implicitly via a parent and the parent added
         // refs to itself inside the `parents` vector, but set
         // `children` to `None`.
-        let mut inserted_bag = self.bags.entry(bag.color.clone()).or_insert(bag.clone());
+        let mut inserted_bag = self.bags.entry(bag.color.clone()).or_insert_with(|| bag.clone());
         inserted_bag.children = bag.children.clone();
     }
 
@@ -115,8 +115,7 @@ impl Rules {
 
         match &bag.children {
             Some(children) => children.iter().fold(0, |acc, (size, child)| {
-                let count = acc + size + self.get_child_count(child, i + 1) * size;
-                count
+                acc + size + self.get_child_count(child, i + 1) * size
             }),
             None => 0,
         }
@@ -126,7 +125,7 @@ impl Rules {
         let child_bag = self
             .bags
             .entry(color.to_string())
-            .or_insert(Bag::new(color, None));
+            .or_insert_with(|| Bag::new(color, None));
         child_bag.parents.push(parent.to_string());
     }
 

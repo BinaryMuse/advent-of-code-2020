@@ -20,6 +20,7 @@ pub fn run_day(day: u32, args: &[String]) {
     runner(input, args);
 }
 
+#[allow(clippy::zero_prefixed_literal)]
 fn get_runner(day: u32) -> Option<Runner> {
     match day {
         01 => Some(Box::new(day01::run)),
