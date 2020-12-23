@@ -26,6 +26,32 @@ impl Direction {
       Direction::SE => (1, -1),
     }
   }
+
+  pub fn right_90(&self) -> Self {
+    match self {
+      Direction::N => Direction::E,
+      Direction::S => Direction::W,
+      Direction::E => Direction::S,
+      Direction::W => Direction::N,
+      Direction::NW => Direction::NE,
+      Direction::NE => Direction::SE,
+      Direction::SW => Direction::NW,
+      Direction::SE => Direction::SW,
+    }
+  }
+
+  pub fn left_90(&self) -> Self {
+    match self {
+      Direction::N => Direction::W,
+      Direction::S => Direction::E,
+      Direction::E => Direction::N,
+      Direction::W => Direction::S,
+      Direction::NW => Direction::SW,
+      Direction::NE => Direction::NW,
+      Direction::SW => Direction::SE,
+      Direction::SE => Direction::NE,
+    }
+  }
 }
 
 pub trait Coordinate {

@@ -11,6 +11,7 @@ mod day08;
 mod day09;
 mod day10;
 mod day11;
+mod day12;
 mod grid;
 
 type Runner = Box<dyn Fn(String, &[String])>;
@@ -40,6 +41,7 @@ fn get_runner(day: u32) -> Option<Runner> {
         09 => Some(Box::new(day09::run)),
         10 => Some(Box::new(day10::run)),
         11 => Some(Box::new(day11::run)),
+        12 => Some(Box::new(day12::run)),
         _ => None,
     }
 }
