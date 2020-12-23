@@ -1,0 +1,12 @@
+#!/bin/bash
+
+day=$1
+last_mod=$(grep 'mod day' src/runners.rs | tail -1)
+last_match=$(grep '=> Some(Box' src/runners.rs | tail -1)
+
+echo "pub fn run(_input: String, _args: &[String]) {" >> "src/runners/day${day}.rs"
+echo "  //" >> "src/runners/day${day}.rs"
+echo "}" >> "src/runners/day${day}.rs"
+sed -i '' "s/${last_mod}/${last_mod}\nmod day${day};/g" src/runners.rs
+sed -i '' "s/${last_match}/${last_match}\n${day} => Some(Box::new(day${day}::run)),/g" src/runners.rs
+rustfmt src/runners.rs
