@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use hashbrown::HashMap;
 
 pub fn run(input: String, _args: &[String]) {
   {
