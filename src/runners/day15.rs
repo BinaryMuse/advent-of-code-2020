@@ -21,6 +21,7 @@ fn parse_input(s: &str) -> Vec<u32> {
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum SpokenHistory {
+  Never,
   Once(usize),
   Twice(usize, usize),
 }
@@ -29,7 +30,7 @@ struct MemoryGame {
   turn: usize,
   start: Vec<u32>,
   last: u32,
-  history: HashMap<u32, Option<SpokenHistory>>,
+  history: Vec<SpokenHistory>,
 }
 
 impl MemoryGame {
@@ -38,18 +39,28 @@ impl MemoryGame {
       turn: 0,
       start: values,
       last: 0,
-      history: Default::default(),
+      history: Vec::with_capacity(2000),
     }
   }
 
   fn speak(&mut self, value: u32) -> Option<u32> {
+    let idx = value as usize;
     self.last = value;
-    let history = self.history.entry(value).or_default();
-    *history = match history {
-      None => Some(SpokenHistory::Once(self.turn)),
-      Some(SpokenHistory::Once(a)) => Some(SpokenHistory::Twice(*a, self.turn)),
-      Some(SpokenHistory::Twice(_, b)) => Some(SpokenHistory::Twice(*b, self.turn)),
+    let history = self.history.get(idx);
+    let new_history = match history {
+      None => SpokenHistory::Once(self.turn),
+      Some(SpokenHistory::Never) => SpokenHistory::Once(self.turn),
+      Some(SpokenHistory::Once(a)) => SpokenHistory::Twice(*a, self.turn),
+      Some(SpokenHistory::Twice(_, b)) => SpokenHistory::Twice(*b, self.turn),
     };
+
+    if idx >= self.history.len() {
+      let diff = idx - self.history.len();
+      self
+        .history
+        .resize(self.history.len() + diff * 2 + 1, SpokenHistory::Never)
+    }
+    self.history[value as usize] = new_history;
     self.turn += 1;
 
     Some(value)
@@ -63,11 +74,11 @@ impl Iterator for MemoryGame {
     if self.turn < self.start.len() {
       self.speak(self.start[self.turn])
     } else {
-      let history = self.history.get(&self.last).unwrap();
+      let history = self.history.get(self.last as usize).unwrap();
       let to_speak = match history {
-        None => panic!("Unexpected None in MemoryGame#next"),
-        Some(SpokenHistory::Once(_)) => 0,
-        Some(SpokenHistory::Twice(a, b)) => b - a,
+        SpokenHistory::Never => panic!("Expected a history"),
+        SpokenHistory::Once(_) => 0,
+        SpokenHistory::Twice(a, b) => b - a,
       };
       self.speak(to_speak as u32)
     }
