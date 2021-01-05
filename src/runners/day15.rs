@@ -109,21 +109,21 @@ fn test_part_1() {
   }
 }
 
-// These tests take a long time in debug mode
-// #[test]
-// fn test_part_2() {
-//   let cases = vec![
-//     ("0,3,6", 175594),
-//     ("1,3,2", 2578),
-//     ("2,1,3", 27),
-//     ("1,2,3", 78),
-//     ("2,3,1", 438),
-//     ("3,2,1", 1836),
-//     ("3,1,2", 1836),
-//   ];
+#[test]
+#[ignore = "this test is slow in debug mode"]
+fn test_part_2() {
+  let cases = vec![
+    ("0,3,6", 175594),
+    ("1,3,2", 2578),
+    ("2,1,3", 27),
+    ("1,2,3", 78),
+    ("2,3,1", 438),
+    ("3,2,1", 1836),
+    ("3,1,2", 1836),
+  ];
 
-//   for (input, expected) in cases {
-//     let mut game = MemoryGame::new(parse_input(input));
-//     assert_eq!(game.nth(30000000 - 1), Some(expected));
-//   }
-// }
+  for (input, expected) in cases {
+    let mut game = MemoryGame::new(parse_input(input));
+    assert_eq!(game.nth(30000000 - 1), Some(expected));
+  }
+}
